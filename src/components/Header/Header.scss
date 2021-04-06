@@ -1,0 +1,17 @@
+.header{
+    padding: 10px 25px;
+    display: flex;
+    align-items: center;
+    background-color: aqua;
+    justify-content: space-between;
+    .logo{
+        height: 38px;
+        width: 95px;
+        display: flex;
+        background-image: url("https://static.catch.app/feeder_homepages/image/catch_logo_april_svg");
+        background-size: cover;
+        img{
+            max-width: 100%;
+        }
+    }
+}
