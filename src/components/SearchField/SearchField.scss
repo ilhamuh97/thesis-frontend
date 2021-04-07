@@ -1,9 +1,9 @@
 .search-wrapper{
     width: 384px;
-    position: relative;
     form{
         position: relative;
         .search {
+            position: relative;
             margin-left: 0;
             margin-right: 0;
             display: flex;
@@ -20,6 +20,34 @@
                 border: 1px solid transparent;
                 border-radius: 20px;
                 width: 100%;
+                &:focus{
+                    border-radius: 0;
+                }
+            }
+            .suggestion-list {
+                position: absolute;
+                background: #fff;
+                border: 1px solid #000;
+                text-align: left;
+                width: 100%;
+                top: 35px;
+                .completion {
+                    padding: 5px 30px 5px 26px;
+                    border-bottom: 1px solid #000;
+                    box-sizing: border-box;
+                    cursor: pointer;
+
+                    &:last-child {
+                        border-bottom: none;
+                    }
+
+                    &:hover {
+                        background-color: #ededed;
+                    }
+                    &.active{
+                        background-color: #ededed;
+                    }
+                }
             }
         }
         .search-submit{
@@ -30,23 +58,5 @@
             top: 8px;
         }
     }
-    .suggestion-list {
-        position: absolute;
-        background: #fff;
-        border: 1px solid #000;
-        text-align: left;
-        width: 100%;
-        .list {
-            padding: 5px 30px 5px 26px;
-            border-bottom: 1px solid #000;
-            box-sizing: border-box;
-            cursor: pointer;
-            &:last-child {
-                border-bottom: none;
-            }
-            &:hover{
-                background-color: #ededed;
-            }
-        }
-    }
+    
 }
