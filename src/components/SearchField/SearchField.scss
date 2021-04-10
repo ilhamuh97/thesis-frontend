@@ -1,5 +1,10 @@
 .search-wrapper{
     width: 384px;
+    ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
     form{
         position: relative;
         .search {
@@ -24,13 +29,14 @@
                     border-radius: 0;
                 }
             }
-            .suggestion-list {
+            .suggestion-list-wrapper {
                 position: absolute;
                 background: #fff;
                 border: 1px solid #000;
                 text-align: left;
                 width: 100%;
                 top: 35px;
+                z-index: 99999;
                 .completion {
                     padding: 5px 30px 5px 26px;
                     border-bottom: 1px solid #000;

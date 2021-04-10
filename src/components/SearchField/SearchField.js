@@ -100,7 +100,34 @@ const SearchField = () => {
         setShow(false);
     }
 
-    // console.log(currentFocus);
+    const completionElements = () => (
+        completions.map((completion, i) => {
+            const value = keyword.replace(/[^a-zA-Z0-9 ]/g, "").trim();
+            const keywordLength = value.length;
+            let unhighlightedString;
+            let highlightedString;
+            let result;
+            if (completion._source.type === "attributes" || completion._source.type === "product type") {
+                if (completion._source.title.substr(0, keywordLength).trim() === value) {
+                    unhighlightedString = completion._source.title.substr(0, keywordLength);
+                    highlightedString = completion._source.title.substr(keywordLength);
+                    result = <span className="suggestion">{unhighlightedString}<b>{highlightedString}</b></span>;
+                } else {
+                    result = <span className="suggestion"><b>{completion._source.title}</b></span>;
+                }
+            } else if (completion._source.type === "category") {
+                //TODO implement completion for type category
+                result = <span className="suggestion"><b>{completion._source.title}</b></span>;
+            }
+            return(
+                <li key={completion._source.id} className={`completion ${currentFocus === i ? "active" : ""}`} onClick={() => autoComplete(completion._source.title)}>
+                    {result}
+                </li>
+            )
+        }
+    ));
+
+    // console.log(completions);
 
     return (
         <div className="search-wrapper">
@@ -120,14 +147,10 @@ const SearchField = () => {
                     />
                     {
                         show&&keyword&&completions.length!==0 ? (
-                            <div className="suggestion-list">
-                                {
-                                    completions.map((completion, i) =>
-                                        <div key={completion._source.id} className={`completion ${currentFocus===i ? "active" : ""}`} onClick={()=>autoComplete(completion._source.title)}>
-                                            {completion._source.title}
-                                        </div>
-                                    )
-                                }
+                            <div className="suggestion-list-wrapper">
+                                <ul className="suggestion-list">
+                                    {completionElements()}
+                                </ul>
                             </div>
                         ) : null
                     }
