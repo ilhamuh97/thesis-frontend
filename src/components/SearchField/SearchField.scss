@@ -1,5 +1,15 @@
 .search-wrapper{
     width: 384px;
+    margin: auto;
+    font-size: 14px;
+    #visual-depth-container{
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.3);
+    }
     ul {
         list-style-type: none;
         padding: 0;
@@ -9,10 +19,7 @@
         position: relative;
         .search {
             position: relative;
-            margin-left: 0;
-            margin-right: 0;
             display: flex;
-            font-size: 14px;
             line-height: 19px;
             #searchfield {
                 background: linear-gradient(#fff, #fff) padding-box,
@@ -26,23 +33,28 @@
                 border-radius: 20px;
                 width: 100%;
                 &:focus{
-                    border-radius: 0;
+                    border-radius: 3px;
+                }
+                &.mobile{
+                    padding: 0 15px 0 15px;
                 }
             }
             .suggestion-list-wrapper {
                 position: absolute;
                 background: #fff;
-                border: 1px solid #000;
+                border: 1px solid rgba(0, 0, 0, 0.3);
+                ;
                 text-align: left;
                 width: 100%;
                 top: 35px;
                 z-index: 99999;
+                box-shadow: 0 8px 16px 1px rgb(0 0 0 / 70%);
                 .completion {
-                    padding: 5px 30px 5px 26px;
-                    border-bottom: 1px solid #000;
+                    padding: 8px 30px 8px 26px;
+                    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+                    ;
                     box-sizing: border-box;
                     cursor: pointer;
-
                     &:last-child {
                         border-bottom: none;
                     }
@@ -53,16 +65,46 @@
                     &.active{
                         background-color: #ededed;
                     }
+                    &.mobile{
+                        padding: 8px 15px 8px 15px;
+                    }
+                    span {
+                        width: 100%;
+                    }
                 }
             }
         }
-        .search-submit{
+        .remove-keyword{
             position: absolute;
-            width: 20px;
-            height: 20px;
-            right: 0;
+            width: 10px;
+            height: 10px;
+            right: 15px;
             top: 8px;
+            opacity: 0.7;
+            img{
+                width: 100%;
+            }
         }
     }
-    
+    &.mobile {
+        font-size: 16px;
+        width: 100%;
+        .suggestion-list-wrapper{
+            li{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+        }
+        .complete-icon{
+            position: relative;
+            width: 20px;
+            height: 20px;
+            opacity: 0.5;
+            img{
+                transform: rotate(45deg);
+                width: 100%;
+            }
+        }
+    }
 }
