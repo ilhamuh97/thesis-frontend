@@ -11,8 +11,8 @@ const SearchField = () => {
     const [completions, setCompletions] = useState([]);
     const [completionSelected, setCompletionsSelected] = useState(false);
     const [currentFocus, setCurrentFocus] = useState(-1);
-    const size = useWindowSize();
     const [isMobile, setIsMobile] = useState(false);
+    const size = useWindowSize();
     const searchFieldEl = useRef(null);
     const suggestionList = useRef(null);
     const formEl = useRef(null);
@@ -100,10 +100,10 @@ const SearchField = () => {
                     setCurrentFocus(currentFocus - 1);
                 }
             } else if (e.keyCode === 13) {
-                /*If the ENTER key is pressed, prevent the form from being submitted,*/
+                // If the ENTER key is pressed, prevent the form from being submitted
                 e.preventDefault();
                 if (currentFocus > -1) {
-                    /*and simulate a click on the "active" item:*/
+                    // and simulate a click on the "active" item:
                     if (x) x[currentFocus].click();
                 }
             }
@@ -134,7 +134,6 @@ const SearchField = () => {
         setKeyword("");
         searchFieldEl.current.focus();
     };
-   
 
     const removeKeywordElement = (
         keyword ? (
@@ -175,7 +174,6 @@ const SearchField = () => {
                             </div>
                         ) : null
                     }
-                    
                 </li>
             )
         }
@@ -220,13 +218,9 @@ const SearchField = () => {
                             </div>
                         ) : null
                     }
-
                     {removeKeywordElement}
-                    
                 </div>
             </form>
-           
-           
         </div>
     );
 };
@@ -234,29 +228,29 @@ const SearchField = () => {
 // source: https://usehooks.com/useWindowSize/
 // function to handle window size
 function useWindowSize() {
-  // Initialize state with undefined width/height so server and client renders match
-  // Learn more here: https://joshwcomeau.com/react/the-perils-of-rehydration/
-  const [windowSize, setWindowSize] = useState({
-    width: undefined,
-    height: undefined,
-  });
-  useEffect(() => {
-    // Handler to call on window resize
-    function handleResize() {
-      // Set window width/height to state
-      setWindowSize({
-        width: window.innerWidth,
-        height: window.innerHeight,
-      });
-    }
-    // Add event listener
-    window.addEventListener("resize", handleResize);
-    // Call handler right away so state gets updated with initial window size
-    handleResize();
-    // Remove event listener on cleanup
-    return () => window.removeEventListener("resize", handleResize);
-  }, []); // Empty array ensures that effect is only run on mount
-  return windowSize;
+    // Initialize state with undefined width/height so server and client renders match
+    // Learn more here: https://joshwcomeau.com/react/the-perils-of-rehydration/
+    const [windowSize, setWindowSize] = useState({
+        width: undefined,
+        height: undefined,
+    });
+    useEffect(() => {
+        // Handler to call on window resize
+        function handleResize() {
+        // Set window width/height to state
+        setWindowSize({
+            width: window.innerWidth,
+            height: window.innerHeight,
+        });
+        }
+        // Add event listener
+        window.addEventListener("resize", handleResize);
+        // Call handler right away so state gets updated with initial window size
+        handleResize();
+        // Remove event listener on cleanup
+        return () => window.removeEventListener("resize", handleResize);
+    }, []); // Empty array ensures that effect is only run on mount
+    return windowSize;
 }
 
 export default SearchField;
