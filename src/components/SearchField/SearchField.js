@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 // import DummyData from '../../assets/dummyData/suggestion-list.json';
 import axios from "axios";
 import CancelIcon from '../../assets/svg/close-line.svg';
@@ -13,6 +13,9 @@ const SearchField = () => {
     const [currentFocus, setCurrentFocus] = useState(-1);
     const size = useWindowSize();
     const [isMobile, setIsMobile] = useState(false);
+    const searchFieldEl = useRef(null);
+    const suggestionList = useRef(null);
+    const formEl = useRef(null);
 
     useEffect(() => {
         if (size.width < 768) {
@@ -47,7 +50,7 @@ const SearchField = () => {
             setCompletions(response.data.suggest.completer[0].options);
         });
         //submit form if competion was selected
-        if (completionSelected) document.getElementsByTagName('form')[0].submit();
+        if (completionSelected) formEl.current.submit();
         if (!keyword) setShow(false);
     }, [keyword, completionSelected, isMobile]);
 
@@ -57,24 +60,25 @@ const SearchField = () => {
         } else {
             setShow(true);
         }
-    }, [completions])
+    }, [completions]);
 
     // after select completion suggestion
     useEffect(() => {
-        let x = document.getElementsByClassName('suggestion-list');
-        if (x[0]) {
-            x = x[0].children;
+        let x = suggestionList.current;
+        // console.log("sug list el", x);
+        if (x) {
+            x = x.children;
             if (x.length !== 0 && currentFocus > -1) {
-                document.getElementById("searchfield").value = x[currentFocus].textContent;
+                searchFieldEl.current.value = x[currentFocus].textContent;
             }
         }
     }, [currentFocus]);
     
     // using keyboard to select the completion suggestion
     const handleKeydown = (e) => {
-        if (!isMobile) {
-            let x = document.getElementsByClassName('suggestion-list');
-            if (x[0]) x = x[0].children;
+        if (!isMobile && show) {
+        let x = suggestionList.current;
+            if (x) x = x.children;
             if (e.keyCode === 40) {
                 /*If the arrow DOWN key is pressed,
                 increase the currentFocus variable:*/
@@ -122,12 +126,13 @@ const SearchField = () => {
      // autocompleting input value
     const autoCompleteWithoutRedirect = (e,value) => {
         e.stopPropagation();
-        document.getElementById("searchfield").value = value;
+        setKeyword(value + " ");
+        searchFieldEl.current.focus();
     };
 
     const emptyInputField = () => {
         setKeyword("");
-        document.getElementById("searchfield").focus();
+        searchFieldEl.current.focus();
     };
    
 
@@ -182,10 +187,6 @@ const SearchField = () => {
         }
     };
 
-    useEffect(() => {
-        console.log("show:", show);
-    },[show])
-
     return (
         <div className={`search-wrapper ${isMobile ? 'mobile' : ''}`}>
             {
@@ -193,12 +194,13 @@ const SearchField = () => {
                     <div id="visual-depth-container" onClick={() => setShow(false)}/>
                 ) : null
             }
-            <form id="search-form"  method="get">
+            <form id="search-form"  ref={formEl} method="get">
                 <div
                     className="search"
                 >
                     <input
                         id="searchfield"
+                        ref={searchFieldEl}
                         className={`${isMobile ? 'mobile' : ''}`}
                         type="text"
                         placeholder="Suche"
@@ -212,7 +214,7 @@ const SearchField = () => {
                     {
                         show ? (
                             <div className="suggestion-list-wrapper">
-                                <ul className="suggestion-list">
+                                <ul className="suggestion-list" ref={suggestionList}>
                                     {completionElements()}
                                 </ul>
                             </div>
