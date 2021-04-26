@@ -40,13 +40,12 @@ const SearchField = () => {
             }
         };
         // REST API request
-        axios.get(`/completions/_search?`, {
+        axios.get(`/completions/_search`, {
             params: {
                 source: JSON.stringify(query),
                 source_content_type: 'application/json'
             }
         }).then(function (response) {
-            // console.log("res", response.data);
             setCompletions(response.data.suggest.completer[0].options);
         });
         //submit form if competion was selected
@@ -65,7 +64,6 @@ const SearchField = () => {
     // after select completion suggestion
     useEffect(() => {
         let x = suggestionList.current;
-        // console.log("sug list el", x);
         if (x) {
             x = x.children;
             if (x.length !== 0 && currentFocus > -1) {
@@ -80,8 +78,7 @@ const SearchField = () => {
         let x = suggestionList.current;
             if (x) x = x.children;
             if (e.keyCode === 40) {
-                /*If the arrow DOWN key is pressed,
-                increase the currentFocus variable:*/
+                // DOWN key is pressed
                 if (currentFocus + 1 >= x.length) {
                     setCurrentFocus(0);
                 } else if (currentFocus + 1 < 0) {
@@ -89,9 +86,8 @@ const SearchField = () => {
                 } else {
                     setCurrentFocus(currentFocus + 1);
                 }
-            } else if (e.keyCode === 38) { //up
-                /*If the arrow UP key is pressed,
-                decrease the currentFocus variable:*/
+            } else if (e.keyCode === 38) { 
+                // UP key is pressed
                 if (currentFocus - 1 >= x.length) {
                     setCurrentFocus(0);
                 } else if (currentFocus - 1 < 0) {
@@ -99,14 +95,7 @@ const SearchField = () => {
                 } else {
                     setCurrentFocus(currentFocus - 1);
                 }
-            } else if (e.keyCode === 13) {
-                // If the ENTER key is pressed, prevent the form from being submitted
-                e.preventDefault();
-                if (currentFocus > -1) {
-                    // and simulate a click on the "active" item:
-                    if (x) x[currentFocus].click();
-                }
-            }
+            } 
         }
     };
 
