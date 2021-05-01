@@ -34,7 +34,10 @@ const SearchField = () => {
                     "completion": {
                         "field": "completion.title",
                         "size": isMobile ? 6 : 10,
-                        "skip_duplicates": true
+                        "skip_duplicates": true,
+                         "fuzzy":{
+                            "fuzziness":"auto"
+                        }
                     }
                 }
             }
@@ -101,7 +104,6 @@ const SearchField = () => {
 
     // change keyowrd while typing
     const handleChange = (value) => {
-        setCurrentFocus(-1);
         setKeyword(value);
     };
 
@@ -140,25 +142,23 @@ const SearchField = () => {
             let highlightedString;
             let result;
             // create design of completion based on its type of completions
-            if (completion._source.type === "attributes" || completion._source.type === "product type") {
-                if (completion._source.title.substr(0, keywordLength).trim() === value) {
-                    unhighlightedString = completion._source.title.substr(0, keywordLength);
-                    highlightedString = completion._source.title.substr(keywordLength);
-                    result = <span className="suggestion">{unhighlightedString}<b>{highlightedString}</b></span>;
-                } else {
-                    result = <span className="suggestion"><b>{completion._source.title}</b></span>;
-                }
-            } 
+            if (completion.text.substr(0, keywordLength).trim() === value) {
+                unhighlightedString = completion.text.substr(0, keywordLength);
+                highlightedString = completion.text.substr(keywordLength);
+                result = <span className="suggestion">{unhighlightedString}<b>{highlightedString}</b></span>;
+            } else {
+                result = <span className="suggestion"><b>{completion.text}</b></span>;
+            }
             return(
                 <li
                     key={completion._source.id}
                     className={`completion ${currentFocus === i ? "active" : ""} ${isMobile ? 'mobile' : ''}`}
-                    onClick={()=>autoComplete(completion._source.title)}
+                    onClick={()=>autoComplete(completion.text)}
                 >
                     {result}
                     {
                         isMobile ? (
-                            <div className="complete-icon" onClick={(e)=>autoCompleteWithoutRedirect(e,completion._source.title)}>
+                            <div className="complete-icon" onClick={(e)=>autoCompleteWithoutRedirect(e,completion.text)}>
                                 <img alt="complete icon" src={CompleteArrow}/>
                             </div>
                         ) : null

@@ -27,7 +27,6 @@ const SearchFieldMobile = () => {
                             </div>
                         ) : null
                     }
-                    {/*<input className="search-submit" type="image" src={SearchIcon}/>*/}
                 </div>
             </form>
         </div>
